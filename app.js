@@ -51,6 +51,7 @@ function bienvenida(){
     <h1>Hola, ${esc(C.nombre)}</h1>
     <p class="sub">${esc(C.titulo)} · ${C.preguntas.length} preguntas</p>
     <p style="margin-top:20px">${esc(C.intro)}</p>
+    <p style="margin-top:12px">📱 Puedes hacerlo desde el móvil o desde el ordenador, como te resulte más cómodo. Incluso empezar en uno y terminar en otro: abre este mismo enlace y seguirás donde lo dejaste.</p>
     <p class="nota">${esc(C.privacidad)}</p>
     <p class="firma">${esc(C.firma)}</p>
     <div class="acciones"><button class="btn btn-primario" id="seguir">Continuar</button></div>`;
@@ -115,7 +116,7 @@ function instrucciones(volver){
       <li><span class="ic">↩</span><div><b>Si te olvidas de algo, vuelve atrás.</b><p>Con «Anterior» o desde el índice puedes ir a cualquier pregunta y añadir lo que quieras. Lo que ya grabaste no se pierde: se suma.</p></div></li>
       <li><span class="ic">💬</span><div><b>Habla con naturalidad.</b><p>No te preocupes por la precisión ni por el orden: te vamos a entender perfectamente. No hace falta ceñirse a la pregunta; si en cualquier momento te acuerdas de algo, aunque sea de otro tema, cuéntalo ahí mismo, como harías hablando con una persona.</p></div></li>
     </ul>
-    <p class="nota">Puedes dejarlo a medias y seguir otro día con el mismo enlace. Estas instrucciones están siempre en el botón «?».</p>
+    <p class="nota">Puedes dejarlo a medias y seguir otro día con el mismo enlace, desde el móvil o desde el ordenador. Estas instrucciones están siempre en el botón «?».</p>
     <div class="acciones"><button class="btn btn-primario" id="ok">Entendido</button></div>`;
   $('ok').onclick=volver;
 }
