@@ -223,7 +223,7 @@ async function pulsarMic(){
     try{ flujo=await navigator.mediaDevices.getUserMedia({audio:true}); }
     catch(e){ return aviso('No hemos podido usar el micrófono. Revisa el permiso del navegador o pulsa «Prefiero escribir».'); }
     const tipo=tipoSoportado();
-    rec=new MediaRecorder(flujo, tipo?{mimeType:tipo}:undefined);
+    rec=new MediaRecorder(flujo, Object.assign({audioBitsPerSecond:48000}, tipo?{mimeType:tipo}:{}));
     trozos=[];
     rec.ondataavailable=e=>{ if(e.data.size) trozos.push(e.data); };
     rec.onstop=()=>{
@@ -255,7 +255,9 @@ async function pulsarMic(){
 }
 function terminar(){ if(rec && rec.state!=='inactive'){ rec.stop(); pararReloj(); } }
 
-function arrancarReloj(){ pararReloj(); reloj=setInterval(()=>{ segundos++; const el=$('tiempo'); if(el) el.textContent=Math.floor(segundos/60)+':'+String(segundos%60).padStart(2,'0'); },1000); }
+const MAX_SEG=30*60;
+function arrancarReloj(){ pararReloj(); reloj=setInterval(()=>{ segundos++;
+  if(segundos>=MAX_SEG && rec && rec.state==='recording'){ terminar(); aviso('Llevas media hora grabando en esta pregunta. Envíala y, si quieres seguir, vuelve a ella con «Añadir algo más».'); } const el=$('tiempo'); if(el) el.textContent=Math.floor(segundos/60)+':'+String(segundos%60).padStart(2,'0'); },1000); }
 function pararReloj(){ clearInterval(reloj); reloj=null; }
 
 function medidor(alNivel){
