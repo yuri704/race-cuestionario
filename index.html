@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Real Aero Club de España · Cuestionario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --marino:#0b1f3a; --marino-2:#13294b; --marino-3:#1c3660;
+  --oro:#c9a45c; --oro-claro:#e6cf98; --rojo:#c8102e;
+  --papel:#f6f3ec; --tinta:#0f1b2d; --gris:#6b7689; --linea:#dcd6c8;
+  --serif:"Cormorant Garamond",Georgia,serif; --sans:Inter,system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--sans);color:var(--tinta);background:var(--marino);
+  background-image:radial-gradient(1200px 600px at 50% -10%,var(--marino-3),var(--marino) 60%);
+  -webkit-font-smoothing:antialiased;min-height:100%;display:flex;flex-direction:column}
+header{text-align:center;padding:28px 16px 18px;color:#fff}
+header img{width:112px;height:auto;filter:drop-shadow(0 6px 18px rgba(0,0,0,.35))}
+header .inst{font-family:var(--serif);font-size:1.35rem;letter-spacing:.14em;text-transform:uppercase;margin-top:10px;color:var(--oro-claro)}
+header .filete{width:56px;height:1px;background:var(--oro);margin:12px auto 0;opacity:.8}
+main{flex:1;display:flex;justify-content:center;padding:0 16px 32px}
+.tarjeta{width:100%;max-width:640px;background:var(--papel);border-radius:14px;
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.55);padding:34px 32px 28px;position:relative;overflow:hidden}
+.tarjeta::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;
+  background:linear-gradient(90deg,var(--oro),var(--oro-claro),var(--oro))}
+h1{font-family:var(--serif);font-weight:600;font-size:2rem;line-height:1.15;color:var(--marino)}
+h2{font-family:var(--serif);font-weight:600;font-size:1.65rem;line-height:1.25;color:var(--marino)}
+p{line-height:1.6;color:#2a3548}
+.sub{color:var(--gris);font-size:.92rem;margin-top:6px}
+.nota{font-size:.85rem;color:var(--gris);border-left:2px solid var(--oro);padding:4px 0 4px 12px;margin-top:18px}
+.firma{font-family:var(--serif);font-size:1.15rem;color:var(--marino);margin-top:14px}
+.btn{font:600 .98rem var(--sans);border:0;border-radius:999px;padding:13px 24px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:10px;transition:transform .08s,background .2s,opacity .2s}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn-primario{background:var(--marino);color:#fff}
+.btn-primario:hover:not(:disabled){background:var(--marino-3)}
+.btn-oro{background:var(--oro);color:var(--marino)}
+.btn-sec{background:transparent;color:var(--marino);border:1px solid var(--linea)}
+.btn-sec:hover{border-color:var(--marino)}
+.btn-link{background:none;border:0;color:var(--gris);font:500 .88rem var(--sans);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.acciones{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;align-items:center}
+.progreso{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.progreso .barra{flex:1;height:4px;background:var(--linea);border-radius:4px;overflow:hidden}
+.progreso .relleno{height:100%;background:var(--oro);transition:width .4s}
+.progreso span{font-size:.8rem;color:var(--gris);font-variant-numeric:tabular-nums;white-space:nowrap}
+.grabador{margin-top:28px;display:flex;flex-direction:column;align-items:center;gap:16px}
+.mic{width:96px;height:96px;border-radius:50%;border:0;cursor:pointer;background:var(--marino);color:#fff;
+  display:grid;place-items:center;position:relative;box-shadow:0 10px 24px -8px rgba(11,31,58,.6)}
+.mic svg{width:36px;height:36px}
+.mic.grabando{background:var(--rojo)}
+.mic.grabando::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid var(--rojo);animation:latido 1.4s infinite}
+@keyframes latido{0%{transform:scale(.92);opacity:.9}100%{transform:scale(1.25);opacity:0}}
+.mic.pausado{background:var(--marino-3)}
+.tiempo{font-variant-numeric:tabular-nums;font-size:1.05rem;color:var(--marino);font-weight:600;letter-spacing:.04em}
+.ondas{display:flex;gap:3px;height:34px;align-items:center}
+.ondas i{width:4px;border-radius:2px;background:var(--oro);height:4px;transition:height .08s}
+.estado-txt{font-size:.85rem;color:var(--gris);min-height:1.2em;text-align:center}
+.controles{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+audio{width:100%;margin-top:4px}
+textarea{width:100%;min-height:170px;border:1px solid var(--linea);border-radius:10px;padding:14px;
+  font:1rem/1.55 var(--sans);color:var(--tinta);background:#fff;resize:vertical;margin-top:22px}
+textarea:focus{outline:2px solid var(--oro);border-color:transparent}
+.oculto{display:none!important}
+.aviso{background:#fff4f4;border:1px solid #f1c6cc;color:#7a1020;border-radius:10px;padding:12px 14px;font-size:.9rem;margin-top:18px}
+.check{width:64px;height:64px;border-radius:50%;background:var(--marino);display:grid;place-items:center;margin-bottom:18px}
+.check svg{width:30px;height:30px;color:var(--oro-claro)}
+.barra-sup{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.barra-sup .progreso{flex:1;margin:0}
+.icono{width:34px;height:34px;border-radius:50%;border:1px solid var(--linea);background:#fff;color:var(--marino);
+  font:600 .95rem var(--sans);cursor:pointer;display:grid;place-items:center;flex:none}
+.icono:hover{border-color:var(--marino)}
+.btn-indice{font:500 .82rem var(--sans);border:1px solid var(--linea);background:#fff;color:var(--marino);
+  border-radius:999px;padding:7px 12px;cursor:pointer;flex:none}
+.btn-indice:hover{border-color:var(--marino)}
+.bloque{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--oro);font-weight:600;margin-bottom:8px}
+h2{font-weight:700}
+.pista{font-size:.88rem;color:var(--gris);margin-top:10px;font-style:italic}
+.indice{list-style:none;margin-top:6px}
+.indice li{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--linea);cursor:pointer}
+.indice li:hover{background:#efe9dc}
+.indice .num{font-variant-numeric:tabular-nums;color:var(--gris);width:22px;flex:none}
+.indice .txt{flex:1;font-size:.95rem;line-height:1.35}
+.chip{font-size:.72rem;border-radius:999px;padding:3px 9px;flex:none;font-weight:600}
+.chip.ok{background:var(--marino);color:#fff}
+.chip.salt{background:#e9e4d8;color:var(--gris)}
+.chip.pend{border:1px solid var(--linea);color:var(--gris)}
+.previas{margin-top:22px;background:#fff;border:1px solid var(--linea);border-radius:12px;padding:14px 16px}
+.previas h3{font:600 .8rem var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-bottom:10px}
+.frag{margin-top:10px}
+.frag .meta{font-size:.78rem;color:var(--gris);margin-bottom:4px}
+.frag .tx{font-size:.95rem;white-space:pre-wrap;color:var(--tinta)}
+.instr{list-style:none;margin-top:18px;display:grid;gap:16px}
+.instr li{display:flex;gap:14px;align-items:flex-start}
+.instr .ic{width:42px;height:42px;border-radius:50%;background:var(--marino);color:var(--oro-claro);display:grid;place-items:center;flex:none;font-size:1.15rem}
+.instr b{display:block;color:var(--marino);margin-bottom:2px}
+.instr p{font-size:.95rem}
+footer{text-align:center;color:rgba(255,255,255,.45);font-size:.75rem;padding:0 16px 22px;letter-spacing:.04em}
+@media (max-width:520px){
+  .tarjeta{padding:28px 20px 22px}
+  h1{font-size:1.7rem} h2{font-size:1.4rem}
+  header img{width:92px}
+  .acciones .btn{flex:1;justify-content:center}
+}
+</style>
+</head>
+<body>
+<header>
+  <img src="logo_race.png" alt="Águila del Real Aero Club de España">
+  <div class="inst">Real Aero Club de España</div>
+  <div class="filete"></div>
+</header>
+
+<main>
+  <section class="tarjeta" id="tarjeta">
+    <p class="sub">Cargando…</p>
+  </section>
+</main>
+
+<footer>Inteligencia artificial para la gestión del RACE</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
