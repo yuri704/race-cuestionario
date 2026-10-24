@@ -54,7 +54,56 @@ function bienvenida(){
     <p class="nota">${esc(C.privacidad)}</p>
     <p class="firma">${esc(C.firma)}</p>
     <div class="acciones"><button class="btn btn-primario" id="seguir">Continuar</button></div>`;
-  $('seguir').onclick=()=>instrucciones(()=>pregunta(0));
+  $('seguir').onclick=()=>instrucciones(()=>pruebaMic(()=>pregunta(0)));
+}
+
+function pruebaMic(despues,mensaje){
+  limpiarGrabacion();
+  T.innerHTML=`
+    <h2>Primero, probemos el micrófono</h2>
+    <p style="margin-top:12px">Pulsa el micrófono, di tu nombre y la ciudad desde la que contestas, y vuelve a pulsarlo. Después escúchate.</p>
+    <div class="grabador">
+      <button class="mic" id="pmic" aria-label="Probar micrófono">${SVG_MIC}</button>
+      <div class="ondas" id="ondas">${'<i></i>'.repeat(24)}</div>
+      <div class="estado-txt" id="pest">Pulsa el micrófono para empezar la prueba.</div>
+      <audio id="preprod" class="oculto" controls></audio>
+    </div>
+    <div id="aviso"></div>
+    <div class="acciones oculto" id="pacc">
+      <button class="btn btn-primario" id="psi">Me oigo bien, empezamos</button>
+      <button class="btn btn-sec" id="pno">No me oigo</button>
+    </div>
+    <div class="acciones"><span style="flex:1"></span><button class="btn-link" id="pescribir">Prefiero contestar por escrito</button></div>`;
+  let maximo=0;
+  if(mensaje) aviso(mensaje);
+  $('pescribir').onclick=despues;
+  $('psi').onclick=()=>{ try{localStorage.setItem('race-mic-ok','1')}catch(e){} limpiarGrabacion(); despues(); };
+  $('pno').onclick=()=>{ pruebaMic(despues,'Comprueba que el navegador tiene permiso para usar el micrófono (el icono del candado o del micrófono junto a la dirección), que no está silenciado y, si usas auriculares, que están conectados. Luego vuelve a probar. Si sigue sin funcionar, prueba desde el móvil o contesta por escrito.'); };
+  $('pmic').onclick=async()=>{
+    const mic=$('pmic');
+    if(rec && rec.state==='recording'){ rec.stop(); return; }
+    try{ flujo=await navigator.mediaDevices.getUserMedia({audio:true}); }
+    catch(e){ return aviso('El navegador no nos deja usar el micrófono. Pulsa el icono del candado o del micrófono junto a la dirección, permite el micrófono y recarga la página. También puedes contestar por escrito.'); }
+    const tipo=tipoSoportado();
+    rec=new MediaRecorder(flujo, tipo?{mimeType:tipo}:undefined); trozos=[];
+    rec.ondataavailable=e=>{ if(e.data.size) trozos.push(e.data); };
+    rec.onstop=()=>{
+      const b=new Blob(trozos,{type:(rec.mimeType||'audio/webm').split(';')[0]});
+      pararMedidor();
+      mic.classList.remove('grabando'); mic.innerHTML=SVG_MIC;
+      if(maximo<25){
+        aviso('No hemos captado tu voz: parece que el micrófono no recoge sonido. Revisa que no esté silenciado o que el navegador use el micrófono correcto, y vuelve a probar.');
+        rec=null; $('pest').textContent='Pulsa el micrófono para repetir la prueba.'; return;
+      }
+      const a=$('preprod'); a.src=URL.createObjectURL(b); a.classList.remove('oculto');
+      $('pest').textContent='Escúchate. ¿Se te oye bien?';
+      $('pacc').classList.remove('oculto'); rec=null;
+    };
+    rec.start(500); maximo=0; aviso('');
+    medidor((v)=>{ if(v>maximo) maximo=v; });
+    mic.classList.add('grabando'); mic.innerHTML=SVG_PAUSA;
+    $('pest').textContent='Grabando… Di tu nombre y pulsa de nuevo para terminar.';
+  };
 }
 
 function instrucciones(volver){
@@ -208,7 +257,7 @@ function terminar(){ if(rec && rec.state!=='inactive'){ rec.stop(); pararReloj()
 function arrancarReloj(){ pararReloj(); reloj=setInterval(()=>{ segundos++; const el=$('tiempo'); if(el) el.textContent=Math.floor(segundos/60)+':'+String(segundos%60).padStart(2,'0'); },1000); }
 function pararReloj(){ clearInterval(reloj); reloj=null; }
 
-function medidor(){
+function medidor(alNivel){
   try{
     ctxAudio=new (window.AudioContext||window.webkitAudioContext)();
     analizador=ctxAudio.createAnalyser(); analizador.fftSize=64;
@@ -218,6 +267,7 @@ function medidor(){
     const pinta=()=>{
       analizador.getByteFrequencyData(datos);
       const activo=rec && rec.state==='recording';
+      if(activo && alNivel) alNivel(Math.max(...datos));
       barras.forEach((b,k)=>{ const v=activo?datos[(k+2)%datos.length]/255:0; b.style.height=(4+v*30)+'px'; });
       rafId=requestAnimationFrame(pinta);
     };
