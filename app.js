@@ -64,7 +64,7 @@ function instrucciones(volver){
     <ul class="instr">
       <li><span class="ic">🎙</span><div><b>Pulsa el micrófono, habla y pulsa «Enviar y seguir».</b><p>Así de sencillo. Si necesitas pensar, pulsa otra vez el micrófono para hacer una pausa. Si quieres escucharte antes de enviarlo, usa «Parar y escucharlo». Si lo prefieres, también puedes escribir.</p></div></li>
       <li><span class="ic">↩</span><div><b>Si te olvidas de algo, vuelve atrás.</b><p>Con «Anterior» o desde el índice puedes ir a cualquier pregunta y añadir lo que quieras. Lo que ya grabaste no se pierde: se suma.</p></div></li>
-      <li><span class="ic">💬</span><div><b>Habla con libertad.</b><p>No hace falta ceñirse a la pregunta. Si en cualquier momento te acuerdas de algo, aunque sea de otro tema, cuéntalo ahí mismo, como harías hablando con una persona. Ya lo ordenaremos nosotros.</p></div></li>
+      <li><span class="ic">💬</span><div><b>Habla con naturalidad.</b><p>No te preocupes por la precisión ni por el orden: te vamos a entender perfectamente. No hace falta ceñirse a la pregunta; si en cualquier momento te acuerdas de algo, aunque sea de otro tema, cuéntalo ahí mismo, como harías hablando con una persona.</p></div></li>
     </ul>
     <p class="nota">Puedes dejarlo a medias y seguir otro día con el mismo enlace. Estas instrucciones están siempre en el botón «?».</p>
     <div class="acciones"><button class="btn btn-primario" id="ok">Entendido</button></div>`;
