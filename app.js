@@ -2,6 +2,7 @@ const SVG_MIC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 const SVG_PAUSA='<svg viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="5" width="3.5" height="14" rx="1"/><rect x="13.5" y="5" width="3.5" height="14" rx="1"/></svg>';
 const SVG_OK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 
+const API='https://qouknsooeokwphjgpsru.supabase.co/functions/v1/cuestionario';
 const codigo=new URLSearchParams(location.search).get('c')||'';
 const T=document.getElementById('tarjeta');
 let C=null, actual=0, vistaPrevia=null;
@@ -17,7 +18,7 @@ const resuelta=i=>contestada(i)||est(i).saltada;
 
 async function cargar(){
   try{
-    const r=await fetch('/api/cuestionario?c='+encodeURIComponent(codigo),{cache:'no-store'});
+    const r=await fetch(`${API}?accion=cuestionario&c=`+encodeURIComponent(codigo),{cache:'no-store'});
     if(!r.ok) throw 0;
     C=await r.json();
   }catch(e){
@@ -106,7 +107,7 @@ function fragmentosHTML(i){
   const fr=est(i).fragmentos; if(!fr.length) return '';
   return `<div class="previas"><h3>Lo que ya has contado</h3>${fr.map((f,k)=>`
     <div class="frag"><div class="meta">${k+1}.º · ${f.tipo==='audio'?'audio':'texto'} · ${new Date(f.fecha).toLocaleString('es-ES',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</div>
-    ${f.tipo==='audio'?`<audio controls preload="none" src="/api/audio?c=${encodeURIComponent(codigo)}&f=${encodeURIComponent(f.fichero)}"></audio>`:`<div class="tx">${esc(f.texto||'')}</div>`}</div>`).join('')}</div>`;
+    ${f.tipo==='audio'?`<audio controls preload="none" src="${API}?accion=audio&c=${encodeURIComponent(codigo)}&f=${encodeURIComponent(f.fichero)}"></audio>`:`<div class="tx">${esc(f.texto||'')}</div>`}</div>`).join('')}</div>`;
 }
 
 function pregunta(i,retoma=false){
@@ -245,7 +246,7 @@ async function enviar(){
   const cuerpo=modoTexto?$('texto').value.trim():blob;
   const tipo=modoTexto?'text/plain; charset=utf-8':(blob.type||'audio/webm');
   try{
-    const r=await fetch(`/api/respuesta?c=${encodeURIComponent(codigo)}&n=${actual}`,{method:'POST',headers:{'Content-Type':tipo},body:cuerpo});
+    const r=await fetch(`${API}?accion=respuesta&c=${encodeURIComponent(codigo)}&n=${actual}`,{method:'POST',headers:{'Content-Type':tipo},body:cuerpo});
     if(!r.ok) throw 0;
     C.estado=(await r.json()).estado;
     irDespues(actual);
@@ -257,7 +258,7 @@ async function enviar(){
 async function saltar(){
   limpiarGrabacion();
   try{
-    const r=await fetch(`/api/saltar?c=${encodeURIComponent(codigo)}&n=${actual}`,{method:'POST'});
+    const r=await fetch(`${API}?accion=saltar&c=${encodeURIComponent(codigo)}&n=${actual}`,{method:'POST'});
     C.estado=(await r.json()).estado;
   }catch(e){}
   irDespues(actual);
